@@ -15,5 +15,5 @@ This script should be ran as a cronjob or other automatically ran script, as it 
 TO-DO: Create a config file for it to use.
 
 ## Credits
-Written by https://github.com/thomasnet-mc
 
+Written by [thomasnet](https://github.com/thomasnet-mc)
