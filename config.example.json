@@ -1,0 +1,7 @@
+{
+  "emailUser": "email@address.com",
+  "emailAuthUser": "email",
+  "emailAuthPassword": "password",
+  "smtpServer": "127.0.0.1",
+  "dbConnString": "server=127.0.0.1;userid=MYSQLUSER;password=MYSQLPW;database=MYSQLDB"
+}

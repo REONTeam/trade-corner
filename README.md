@@ -1,18 +1,12 @@
 # trade-corner
 
-Cron script to automatically perform trades already in database.
+Cron script to perform trades in Pokémon Crystal, based on Háčky's original findings on [Glitch City](https://archives.glitchcity.info/forums/board-76/thread-7509/page-0.html) - search for "PokéCom Center Trade Corner".
 
 ## Setup
 
-Open `Program.cs` in a text editor, and edit the following strings:
-- `EMAIL` should be the email that you're sending from (ex: 'pokecenter@sub1.server.tld')
-- `PASS` should be the password for this email account.
-- `SMTP` should be the SMTP server you're using (127.0.0.1 or the FQDN)
-- `MYSQLUSER` and `MYSQLPW` should be your MySQL credentials that can read/write to the trades table in the database `MYSQLDB`
+Create `config.json` using the example file provided.
 
-This script should be ran as a cronjob or other automatically ran script, as it will perform the trades.
-
-TO-DO: Create a config file for it to use.
+This script should be run as a cronjob, as it will exit once it's completed; we recommend doing it once per hour (as the game itself wont let a user check before an hour has passed).
 
 ## Credits
 

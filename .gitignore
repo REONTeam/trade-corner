@@ -387,3 +387,7 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+
+# Project-unique files
+config.json
