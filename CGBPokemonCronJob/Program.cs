@@ -6,9 +6,23 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace CGBPokemonCronJob
 {
+    class Config {
+        [JsonIgnore]
+        public static Config Instance { get; set; } = new Config();
+
+        public string emailUser { get; set; }
+        public string emailAuthUser { get; set; }
+        public string emailAuthPassword { get; set; }
+
+        public string smtpServer { get; set; }
+
+        public string dbConnString { get; set; }
+    }
+
     class Program
     {
         static async Task SendEmailAsync(string email,
@@ -18,7 +32,7 @@ namespace CGBPokemonCronJob
             string body)
         {
             var mimeMessage = new MimeMessage();
-            mimeMessage.From.Add(new MailboxAddress("EMAIL"));
+            mimeMessage.From.Add(new MailboxAddress(Config.Instance.emailUser));
             mimeMessage.To.Add(new MailboxAddress(email));
             mimeMessage.Headers.Add("X-Game-code", "CGB-BXTJ-00");
             mimeMessage.Headers.Add("X-Game-result", $"1 {trainerId}{secretId} {genderOffered}{speciesOffered:x2} {genderRequested}{speciesRequested:x2}} 1");
@@ -37,8 +51,8 @@ namespace CGBPokemonCronJob
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("SMTP", 25, MailKit.Security.SecureSocketOptions.None);
-                await client.AuthenticateAsync("EMAIL", "PASS");
+                await client.ConnectAsync(Config.Instance.smtpServer, 25, MailKit.Security.SecureSocketOptions.None);
+                await client.AuthenticateAsync(Config.Instance.emailAuthUser, Config.Instance.emailAuthPassword);
 
                 await client.SendAsync(formatOptions, mimeMessage);
 
@@ -50,7 +64,7 @@ namespace CGBPokemonCronJob
 
         static async Task DoJob()
         {
-            const string connString = "server=127.0.0.1;userid=MYSQLUSER;password=MYSQLPW;database=MYSQLDB";
+            const string connString = Config.Instance.dbConnString;
 
             MySqlConnection conn = null;
 
@@ -112,6 +126,8 @@ namespace CGBPokemonCronJob
 
         static void Main(string[] args)
         {
+            Config.Instance = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
+
             DoJob().Wait();
         }
     }
